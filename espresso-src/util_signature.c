@@ -2,8 +2,6 @@
  * Purpose:
  *	contains miscellaneous utility routines 
  * Routines:
- * void set_time_limit(seconds)
- *	sets the cpu time limit
  * int sf_equal():
  *	 checks equlaity of two set families.
  * int print_cover():
@@ -21,16 +19,10 @@
 #include "espresso.h"
 #include "signature.h"
 #include <sys/time.h>
+#ifndef _WIN32
 #include <sys/resource.h>
+#endif
 #include <unistd.h>
-
-void
-set_time_limit(int seconds)
-{
-	struct rlimit rlp_st, *rlp = &rlp_st;
-	rlp->rlim_cur = seconds;
-	setrlimit(RLIMIT_CPU, rlp);
-}
 
 void
 print_cover(pset_family F, char *name)

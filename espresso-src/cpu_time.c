@@ -30,7 +30,7 @@
 #endif
 
 /* default */
-#if !defined(BSD) && !defined(UNIX10) && !defined(UNIX60) && !defined(UNIX100)
+#if !defined(BSD) && !defined(UNIX10) && !defined(UNIX60) && !defined(UNIX100) && !defined(_WIN32)
 #define BSD
 #endif
 
@@ -51,6 +51,11 @@
 #include <sys/times.h>
 #endif
 
+#ifdef _WIN32
+#include <time.h>
+#include <sys/timeb.h>
+#endif
+
 
 /*
  *   util_cpu_time -- return a long which represents the elapsed processor
@@ -59,6 +64,12 @@
 long util_cpu_time(void)
 {
     long t = 0;
+
+#ifdef _WIN32
+	struct _timeb tstruct;
+	_ftime_s( &tstruct );
+	t = tstruct.millitm;
+#endif
 
 #ifdef BSD
     struct rusage rusage;
